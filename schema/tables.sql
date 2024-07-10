@@ -104,6 +104,27 @@ CREATE TABLE `douyin_aweme_comment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='抖音视频评论';
 
 -- ----------------------------
+-- Table structure for dy_creator
+-- ----------------------------
+DROP TABLE IF EXISTS `dy_creator`;
+CREATE TABLE `dy_creator` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `user_id` varchar(128) NOT NULL COMMENT '用户ID',
+  `nickname` varchar(64) DEFAULT NULL COMMENT '用户昵称',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '用户头像地址',
+  `ip_location` varchar(255) DEFAULT NULL COMMENT '评论时的IP地址',
+  `add_ts` bigint NOT NULL COMMENT '记录添加时间戳',
+  `last_modify_ts` bigint NOT NULL COMMENT '记录最后修改时间戳',
+  `desc` longtext COMMENT '用户描述',
+  `gender` varchar(1) DEFAULT NULL COMMENT '性别',
+  `follows` varchar(16) DEFAULT NULL COMMENT '关注数',
+  `fans` varchar(16) DEFAULT NULL COMMENT '粉丝数',
+  `interaction` varchar(16) DEFAULT NULL COMMENT '获赞数',
+  `videos_count` varchar(16) DEFAULT NULL COMMENT '作品数',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='抖音博主信息';
+
+-- ----------------------------
 -- Table structure for kuaishou_video
 -- ----------------------------
 DROP TABLE IF EXISTS `kuaishou_video`;
@@ -280,5 +301,17 @@ CREATE TABLE `xhs_note_comment` (
   KEY `idx_xhs_note_co_comment_8e8349` (`comment_id`),
   KEY `idx_xhs_note_co_create__204f8d` (`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='小红书笔记评论';
+
+-- ----------------------------
+-- alter table xhs_note_comment to support parent_comment_id
+-- ----------------------------
+ALTER TABLE `xhs_note_comment`
+ADD COLUMN `parent_comment_id` VARCHAR(64) DEFAULT NULL COMMENT '父评论ID';
+
+ALTER TABLE `douyin_aweme_comment`
+ADD COLUMN `parent_comment_id` VARCHAR(64) DEFAULT NULL COMMENT '父评论ID';
+
+ALTER TABLE `bilibili_video_comment`
+ADD COLUMN `parent_comment_id` VARCHAR(64) DEFAULT NULL COMMENT '父评论ID';
 
 SET FOREIGN_KEY_CHECKS = 1;

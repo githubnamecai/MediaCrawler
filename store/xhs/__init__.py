@@ -74,6 +74,7 @@ async def update_xhs_note_comment(note_id: str, comment_item: Dict):
     user_info = comment_item.get("user_info", {})
     comment_id = comment_item.get("id")
     comment_pictures = [item.get("url_default", "") for item in comment_item.get("pictures", [])]
+    target_comment = comment_item.get("target_comment", {})
     local_db_item = {
         "comment_id": comment_id,
         "create_time": comment_item.get("create_time"),
@@ -83,8 +84,9 @@ async def update_xhs_note_comment(note_id: str, comment_item: Dict):
         "user_id": user_info.get("user_id"),
         "nickname": user_info.get("nickname"),
         "avatar": user_info.get("image"),
-        "sub_comment_count": comment_item.get("sub_comment_count"),
+        "sub_comment_count": comment_item.get("sub_comment_count", 0),
         "pictures": ",".join(comment_pictures),
+        "parent_comment_id": target_comment.get("id", 0),
         "last_modify_ts": utils.get_current_timestamp(),
     }
     utils.logger.info(f"[store.xhs.update_xhs_note_comment] xhs note comment:{local_db_item}")
@@ -111,7 +113,7 @@ async def save_creator(user_id: str, creator: Dict):
         'gender': '女' if user_info.get('gender') == 1 else '男',
         'avatar': user_info.get('images'),
         'desc': user_info.get('desc'),
-        'ip_location': user_info.get('ip_location'),
+        'ip_location': user_info.get('ipLocation'),
         'follows': follows,
         'fans': fans,
         'interaction': interaction,

@@ -6,10 +6,6 @@ from playwright.async_api import BrowserContext, BrowserType
 
 class AbstractCrawler(ABC):
     @abstractmethod
-    def init_config(self, platform: str, login_type: str, crawler_type: str):
-        pass
-
-    @abstractmethod
     async def start(self):
         pass
 
@@ -57,15 +53,19 @@ class AbstractStore(ABC):
         pass
 
 
-class AbstactApiClient(ABC):
+class AbstractStoreImage(ABC):
+    # TODO: support all platform
+    # only weibo is supported
+    # @abstractmethod
+    async def store_image(self, image_content_item: Dict):
+        pass
+
+
+class AbstractApiClient(ABC):
     @abstractmethod
     async def request(self, method, url, **kwargs):
         pass
 
     @abstractmethod
     async def update_cookies(self, browser_context: BrowserContext):
-        pass
-
-    @abstractmethod
-    async def pong(self):
         pass
